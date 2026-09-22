@@ -38,9 +38,7 @@ PRODUCTS = [
         "url": None,
         "checker": "pokemon_center",
         "enabled": True
-    }
-
-],
+    },
 
     {
         "id": "bestbuy-30th-etb",
@@ -53,3 +51,5 @@ PRODUCTS = [
         "expected_price": 49.99,
         "enabled": True
     }
+
+]
