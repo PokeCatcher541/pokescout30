@@ -40,4 +40,16 @@ PRODUCTS = [
         "enabled": True
     }
 
-]
+],
+
+    {
+        "id": "bestbuy-30th-etb",
+        "name": "30th Celebration Elite Trainer Box",
+        "store": "Best Buy",
+        "category": "30th Celebration",
+        "url": "https://www.bestbuy.com/product/pokemon-trading-card-game-30th-celebration-elite-trainer-box/JJG2TL8XCJ",
+        "checker": "best_buy",
+        "sku": "6685559",
+        "expected_price": 49.99,
+        "enabled": True
+    }
