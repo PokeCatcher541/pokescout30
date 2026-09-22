@@ -25,29 +25,21 @@ def send_telegram(message):
 def main():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    results = []
+    print("Starting PokéScout 30...")
+    print(f"Products loaded: {len(PRODUCTS)}")
+    print(f"Scan time: {current_time}")
 
     for product in PRODUCTS:
         result = check_product(product)
 
-        if result["page_loaded"]:
-            status = f"✅ Page loaded ({result['status_code']})"
-        else:
-            status = f"❌ Page failed ({result['status_code']})"
-
-        results.append(
-            f"🎴 {result['name']}\n"
-            f"🏪 {result['store']}\n"
-            f"{status}"
+        print(
+            f"{result['name']} | "
+            f"{result['store']} | "
+            f"HTTP {result['status_code']}"
         )
 
-    message = (
-        "🧪 POKÉSCOUT WEB TEST\n\n"
-        + "\n\n".join(results)
-        + f"\n\nScan time: {current_time}"
-    )
-
-    send_telegram(message)
+    print("Scan complete.")
+    print("Telegram alerts are currently disabled while stock detection is being built.")
 
 
 if __name__ == "__main__":
