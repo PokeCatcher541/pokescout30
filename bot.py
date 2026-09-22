@@ -48,11 +48,14 @@ def main():
         result = check_product(product)
 
         print(
-            f"{result['id']} | "
-            f"{result['store']} | "
-            f"{result['status']} | "
-            f"HTTP: {result['status_code']}"
-        )
+    f"{result['id']} | "
+    f"{result['store']} | "
+    f"{result['status']} | "
+    f"HTTP: {result['status_code']}"
+    )
+
+if result.get("error"):
+    print(f"  Error: {result['error']}")
 
     print()
     print("Scan complete.")
