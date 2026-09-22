@@ -2,12 +2,26 @@ import requests
 
 
 def check_product(product):
-    """
-    Checks a product webpage and returns information about the request.
 
-    This is our first test version.
-    It does NOT decide whether something is actually in stock yet.
-    """
+    # Product disabled
+    if not product.get("enabled", True):
+        return {
+            "id": product["id"],
+            "name": product["name"],
+            "store": product["store"],
+            "status": "disabled",
+            "status_code": None
+        }
+
+    # We don't have a verified product URL yet
+    if not product.get("url"):
+        return {
+            "id": product["id"],
+            "name": product["name"],
+            "store": product["store"],
+            "status": "no_url",
+            "status_code": None
+        }
 
     headers = {
         "User-Agent": (
@@ -18,28 +32,40 @@ def check_product(product):
     }
 
     try:
+
         response = requests.get(
             product["url"],
             headers=headers,
             timeout=20
         )
 
+        if response.status_code == 403:
+            status = "blocked"
+
+        elif response.status_code == 429:
+            status = "rate_limited"
+
+        elif response.ok:
+            status = "page_loaded"
+
+        else:
+            status = "page_error"
+
         return {
+            "id": product["id"],
             "name": product["name"],
             "store": product["store"],
-            "url": product["url"],
-            "status_code": response.status_code,
-            "page_loaded": response.ok,
-            "html": response.text
+            "status": status,
+            "status_code": response.status_code
         }
 
     except requests.RequestException as error:
+
         return {
+            "id": product["id"],
             "name": product["name"],
             "store": product["store"],
-            "url": product["url"],
+            "status": "connection_error",
             "status_code": None,
-            "page_loaded": False,
-            "html": "",
             "error": str(error)
         }
