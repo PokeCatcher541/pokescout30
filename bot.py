@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timezone
 
 from products import PRODUCTS
-from stock_checker import check_product
+from browser_checker import check_with_browser
 
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
@@ -12,7 +12,10 @@ TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 def send_telegram(message):
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    url = (
+        f"https://api.telegram.org/"
+        f"bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    )
 
     data = {
         "chat_id": TELEGRAM_CHAT_ID,
@@ -35,31 +38,57 @@ def main():
         "%Y-%m-%d %H:%M:%S UTC"
     )
 
-    print("=" * 50)
-    print("POKESCOUT 30")
-    print("=" * 50)
+    print("=" * 60)
+    print("POKESCOUT 30 - BROWSER TEST")
+    print("=" * 60)
 
     print(f"Products loaded: {len(PRODUCTS)}")
     print(f"Scan started: {current_time}")
     print()
 
+    tested = 0
+
     for product in PRODUCTS:
 
-        result = check_product(product)
+        if product.get("checker") != "best_buy":
+            continue
+
+        tested += 1
+
+        print(f"Testing: {product['name']}")
+        print(f"Store: {product['store']}")
+
+        result = check_with_browser(product)
+
+        print(f"Status: {result['status']}")
+        print(f"HTTP: {result['http_status']}")
+        print(f"Title: {result['title']}")
+        print(f"Final URL: {result['final_url']}")
 
         print(
-            f"{result['id']} | "
-            f"{result['store']} | "
-            f"{result['status']} | "
-            f"HTTP: {result['status_code']}"
+            "Add to Cart text: "
+            f"{result['has_add_to_cart']}"
+        )
+
+        print(
+            "Sold Out text: "
+            f"{result['has_sold_out']}"
+        )
+
+        print(
+            "Unavailable text: "
+            f"{result['has_unavailable']}"
         )
 
         if result.get("error"):
-            print(f"  Error: {result['error']}")
+            print(f"Error: {result['error']}")
+
+        print("-" * 60)
 
     print()
-    print("Scan complete.")
-    print("No Telegram message sent.")
+    print(f"Browser products tested: {tested}")
+    print("Browser test complete.")
+    print("No Telegram alert sent.")
 
 
 if __name__ == "__main__":
