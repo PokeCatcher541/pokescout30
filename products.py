@@ -1,31 +1,43 @@
 PRODUCTS = [
 
     {
+        "id": "30th-etb",
         "name": "30th Celebration Elite Trainer Box",
-        "store": "Pokémon Center",
+        "store": "Pokemon Center",
         "category": "30th Celebration",
-        "url": "https://www.pokemoncenter.com/"
+        "url": None,
+        "checker": "pokemon_center",
+        "enabled": True
     },
 
     {
+        "id": "30th-booster-bundle",
         "name": "30th Celebration Booster Bundle",
-        "store": "Pokémon Center",
+        "store": "Pokemon Center",
         "category": "30th Celebration",
-        "url": "https://www.pokemoncenter.com/"
+        "url": None,
+        "checker": "pokemon_center",
+        "enabled": True
     },
 
     {
+        "id": "30th-mini-tins",
         "name": "30th Celebration Mini Tins",
-        "store": "Pokémon Center",
+        "store": "Pokemon Center",
         "category": "30th Celebration",
-        "url": "https://www.pokemoncenter.com/"
+        "url": None,
+        "checker": "pokemon_center",
+        "enabled": True
     },
 
     {
+        "id": "30th-tech-sticker",
         "name": "30th Celebration Tech Sticker Collection",
-        "store": "Pokémon Center",
+        "store": "Pokemon Center",
         "category": "30th Celebration",
-        "url": "https://www.pokemoncenter.com/"
+        "url": None,
+        "checker": "pokemon_center",
+        "enabled": True
     }
 
 ]
