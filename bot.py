@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 
 from products import PRODUCTS
+from stock_checker import check_product
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
@@ -21,31 +22,29 @@ def send_telegram(message):
     response.raise_for_status()
 
 
-def build_product_list():
-    lines = []
-
-    for product in PRODUCTS:
-        lines.append(
-            f"🎴 {product['name']}\n"
-            f"🏪 {product['store']}\n"
-            f"📦 {product['category']}\n"
-            f"🔗 {product['url']}"
-        )
-
-    return "\n\n".join(lines)
-
-
 def main():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    product_list = build_product_list()
+    results = []
+
+    for product in PRODUCTS:
+        result = check_product(product)
+
+        if result["page_loaded"]:
+            status = f"✅ Page loaded ({result['status_code']})"
+        else:
+            status = f"❌ Page failed ({result['status_code']})"
+
+        results.append(
+            f"🎴 {result['name']}\n"
+            f"🏪 {result['store']}\n"
+            f"{status}"
+        )
 
     message = (
-        "🤖 POKÉSCOUT 30\n\n"
-        "✅ Product database loaded successfully!\n\n"
-        f"{product_list}\n\n"
-        f"Products loaded: {len(PRODUCTS)}\n\n"
-        f"Scan time: {current_time}"
+        "🧪 POKÉSCOUT WEB TEST\n\n"
+        + "\n\n".join(results)
+        + f"\n\nScan time: {current_time}"
     )
 
     send_telegram(message)
